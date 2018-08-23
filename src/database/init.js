@@ -1,10 +1,12 @@
 var sqlite3 = require("sqlite3").verbose();
-
 var executeQuery = require("./executeQuery").executeQuery;
+var log = require("../server/log").log;
 
 exports.init = callback => {
   db = new sqlite3.Database("../zipdb.db", err => {
     if (err) console.log(err);
+
+    log("Started database initialization");
 
     var users = executeQuery(db, "init/createTableUsers.sql");
     var fixtures = executeQuery(db, "init/createTableFixtures.sql");
@@ -15,7 +17,7 @@ exports.init = callback => {
       db.close(err => {
         if (err) throw err;
       });
-      console.log(new Date().toLocaleString() + " Database initialized successfully");
+      log("Database initialized successfully");
       callback();
     });
   });
