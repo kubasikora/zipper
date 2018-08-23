@@ -1,53 +1,23 @@
 var sqlite3 = require("sqlite3").verbose();
+
+
+var sql = require("./executeQuery");
+
+
 exports.init = () => {
-  var db = new sqlite3.Database("../zipdb.db", err => {
-    if (err) {
-      console.log(err);
-    }
-  });
+  db = new sqlite3.Database("../zipdb.db", err => {
+    if (err) console.log(err);
 
-  db.run(
-    `CREATE TABLE IF NOT EXISTS users(
-        id INTEGER NOT NULL,
-        name VARCHAR,
-        login VARCHAR(255) NOT NULL,
-        password VARCHAR(255) NOT NULL,
-        PRIMARY KEY(id)
-        )`,
-    err => {
-      if (err) {
-        console.log("Error while initializing users table");
-        console.log(err);
-      }
-    }
-  );
+    var users = sql.executeQuery("init/createTableUsers.sql");
+    var fixtures = sql.executeQuery("init/createTableFixtures.sql");
+    var teams = sql.executeQuery("init/createTableTeams.sql");
+    var bets = sql.executeQuery("init/createTableBets.sql");
 
-  db.run(
-    `CREATE TABLE IF NOT EXISTS teams(
-        name VARCHAR,
-        groupLetter CHAR(1) NOT NULL,
-        matchesPlayed INTEGER, 
-        wins INTEGER,
-        draws INTEGER,
-        losses INTEGER,
-        goalsScored INTEGER, 
-        goalsConceded INTEGER,
-        points INTEGER,
-        PRIMARY KEY(name)
-        )`,
-    err => {
-      if (err) {
-        console.log("Error while initializing teams table");
-        console.log(err);
-      }
-    }
-  );
-
-  db.close(err => {
-    if (err) {
-      console.log("Error while initializing database");
-    } else {
-      console.log("Initializing finished");
-    }
+    Promise.all([users, fixtures, teams, bets]).then(result => {
+      db.close(err => {
+        if (err) throw err;
+      });
+      console.log((new Date()).toLocaleString() + " Database initialized successfully");
+    });
   });
 };

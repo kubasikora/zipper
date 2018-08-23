@@ -3,4 +3,5 @@ CREATE TABLE IF NOT EXISTS "bets" (
     `fixture` INTEGER,
     `user` INTEGER,
     `result` INTEGER,
+    PRIMARY KEY (`betID`)
 )
