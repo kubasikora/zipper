@@ -1,6 +1,6 @@
 var express = require("express");
 
-var logger = require("./server/logger").logger;
+var httpLogger = require("./server/httpLogger").logger;
 var api = require("./api");
 var init = require("./database/init").init;
 var log = require("./server/log").log;
@@ -12,7 +12,7 @@ var host = debug.setHost();
 
 
 init(() => {
-  app.use(logger);
+  app.use(httpLogger);
   app.use(express.static("../public"));
   app.use("/api", api.router);
 
