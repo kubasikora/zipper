@@ -1,4 +1,4 @@
 exports.logger = (req, res, next) => {
-    console.log(req.method + " " + req.url + " " +  (new Date()).toDateString());
-    next();
-}
+  console.log(new Date().toLocaleString() + " " + req.method + " " + req.url + " from " + req.ip);
+  next();
+};

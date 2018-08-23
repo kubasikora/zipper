@@ -1,23 +1,21 @@
 var sqlite3 = require("sqlite3").verbose();
 
-
-var sql = require("./executeQuery");
-
+var executeQuery = require("./executeQuery").executeQuery;
 
 exports.init = () => {
   db = new sqlite3.Database("../zipdb.db", err => {
     if (err) console.log(err);
 
-    var users = sql.executeQuery("init/createTableUsers.sql");
-    var fixtures = sql.executeQuery("init/createTableFixtures.sql");
-    var teams = sql.executeQuery("init/createTableTeams.sql");
-    var bets = sql.executeQuery("init/createTableBets.sql");
+    var users = executeQuery(db, "init/createTableUsers.sql");
+    var fixtures = executeQuery(db, "init/createTableFixtures.sql");
+    var teams = executeQuery(db, "init/createTableTeams.sql");
+    var bets = executeQuery(db, "init/createTableBets.sql");
 
     Promise.all([users, fixtures, teams, bets]).then(result => {
       db.close(err => {
         if (err) throw err;
       });
-      console.log((new Date()).toLocaleString() + " Database initialized successfully");
+      console.log(new Date().toLocaleString() + " Database initialized successfully");
     });
   });
 };
