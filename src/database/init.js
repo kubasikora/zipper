@@ -2,7 +2,7 @@ var sqlite3 = require("sqlite3").verbose();
 
 var executeQuery = require("./executeQuery").executeQuery;
 
-exports.init = () => {
+exports.init = callback => {
   db = new sqlite3.Database("../zipdb.db", err => {
     if (err) console.log(err);
 
@@ -16,6 +16,7 @@ exports.init = () => {
         if (err) throw err;
       });
       console.log(new Date().toLocaleString() + " Database initialized successfully");
+      callback();
     });
   });
 };
