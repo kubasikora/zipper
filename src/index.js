@@ -3,10 +3,11 @@ var session = require("express-session");
 var passport = require("passport");
 var bodyParser = require("body-parser");
 var LocalStrategy = require('passport-local').Strategy;
+var crypto = require("crypto");
+var sqlite3 = require("sqlite3");
 
 var httpLogger = require("./server/httpLogger").logger;
 var api = require("./api");
-var auth = require("./auth");
 var init = require("./database/init").init;
 var log = require("./server/log").log;
 var debug = require("./server/setHost");
@@ -23,8 +24,6 @@ init(() => {
   app.use(session({ secret: 'tjmmnw', resave: null, saveUninitialized: null }));
   app.use(passport.initialize());
   app.use(passport.session());
-  var crypto = require("crypto");
-  var sqlite3 = require("sqlite3");
 
   var db = new sqlite3.Database("../zipdb.db");
 
