@@ -20,4 +20,4 @@ router.get("/users", (req, res) => {
     });
   });
 
-exports.router = router;
+module.exports = router;

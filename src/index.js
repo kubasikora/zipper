@@ -11,6 +11,8 @@ var log = require("./server/log").log;
 var debug = require("./server/setHost");
 var hashPassword = require("./auth/hashPassword").hashPassword;
 var authStrategy = require("./auth/authStrategy").authStrategy;
+var deserializeUser = require("./auth/deserialize").deserializeUser;
+var logRouter = require("./auth/logRouter");
 
 var app = express();
 var port = process.env.PORT || 8000;
@@ -31,36 +33,10 @@ init(() => {
     return done(null, user.userID);
   });
 
-  passport.deserializeUser(function(id, done) {
-    var db = new sqlite3.Database("../zipdb.db");
-    db.get("SELECT userID, login, name FROM users WHERE userID = ?", id, function(err, row) {
-      if (!row)
-        return (db, done) => {
-          db.close(err => {
-            return done(null, false);
-          });
-        };
-      db.close(err => {
-        return done(null, row);
-      });
-    });
-  });
+  passport.deserializeUser((id,done) => deserializeUser(id, done));
 
-  app.post(
-    "/login",
-    passport.authenticate("local", {
-      successRedirect: "/",
-      failureRedirect: "/bad-login"
-    })
-  );
-
-  var logout = require("./auth/logout").logout;
-  app.get("/logout", (req, res) => {
-    return logout(req, res, null);
-  });
-
-
-  app.use("/api", api.router);
+  app.use("/", logRouter);
+  app.use("/api", api);
 
   app.listen(port, host);
   log(`Listening on port ${port} on host ${host}`);

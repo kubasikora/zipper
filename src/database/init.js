@@ -8,10 +8,10 @@ exports.init = callback => {
 
     log("Started database initialization");
 
-    var users = executeQuery(db, "init/createTableUsers.sql");
-    var fixtures = executeQuery(db, "init/createTableFixtures.sql");
-    var teams = executeQuery(db, "init/createTableTeams.sql");
-    var bets = executeQuery(db, "init/createTableBets.sql");
+    var users = executeQuery(db, "init/createTableUsers.sql", null);
+    var fixtures = executeQuery(db, "init/createTableFixtures.sql", null);
+    var teams = executeQuery(db, "init/createTableTeams.sql", null);
+    var bets = executeQuery(db, "init/createTableBets.sql", null);
 
     Promise.all([users, fixtures, teams, bets]).then(result => {
       db.close(err => {
