@@ -1,7 +1,8 @@
-var express = require('express')
-var router = express.Router()
+var express = require("express");
+var router = express.Router();
 var passport = require("passport");
 var logout = require("./logout").logout;
+var register = require("./register").register;
 
 router.post("/login", passport.authenticate("local", {
     successRedirect: "/",
@@ -9,8 +10,12 @@ router.post("/login", passport.authenticate("local", {
   })
 );
 
-router.get("/logout", (req, res) => {
-    return logout(req, res, null);
-  });
+router.post("/register", (req, res) => {
+  return register(req, res);
+});
 
-module.exports = router
+router.get("/logout", (req, res) => {
+  return logout(req, res, null);
+});
+
+module.exports = router;

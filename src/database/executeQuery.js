@@ -1,21 +1,32 @@
 var fs = require("fs");
+var sqlite3 = require("sqlite3");
+
 var log = require("../server/log").log;
 var dir = "./database/sql/";
 
-exports.executeQuery = (database, filename, params) => {
+exports.executeQuery = (filename, params) => {
   return new Promise((resolve, reject) => {
+    var db = new sqlite3.Database("../zipdb.db");
     fs.readFile(dir + filename, (err, sql) => {
       if (err) throw err;
       log("Running SQL query " + filename);
       if (params) {
-        database.get(sql.toString(), params, (err, rows) => {
+        db.all(sql.toString(), params, (err, rows) => {
           if (err) throw err;
-          resolve(rows);
+          db.close(err => {
+            if(err) throw err;
+            if(rows.length ===  1) rows = rows[0];
+            resolve(rows);
+          });
         });
       } else {
-        database.get(sql.toString(), (err, rows) => {
+        db.all(sql.toString(), (err, rows) => {
           if (err) throw err;
-          resolve(rows);
+          db.close(err => {
+            if(err) throw err;
+            if(rows.length ===  1) rows = rows[0];
+            resolve(rows);
+          });
         });
       }
     });
