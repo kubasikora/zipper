@@ -1,5 +1,3 @@
-var sqlite3 = require("sqlite3").verbose();
-
 var executeQuery = require("../database/executeQuery").executeQuery;
 
 exports.fetchUsers = apiCallback => {

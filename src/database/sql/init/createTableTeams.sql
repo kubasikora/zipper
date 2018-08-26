@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS "teams" (
-    `teamID` INTEGER,
-    `name` VARCHAR,
+    `teamID` INTEGER NOT NULL,
+    `name` VARCHAR UNIQUE,
     `groupLetter` CHAR ( 1 ) NOT NULL,
     `matchesPlayed` INTEGER,
     `wins` INTEGER,
