@@ -4,5 +4,6 @@ CREATE TABLE IF NOT EXISTS "users" (
     `login` TEXT NOT NULL UNIQUE,
     `password` TEXT NOT NULL,
     `salt` TEXT,
+    `UCLwinner` INTEGER,
     PRIMARY KEY(`userID`) 
 )
