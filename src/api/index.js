@@ -1,10 +1,15 @@
 var express = require("express");
 var router = express.Router();
 
-var fetchUsers = require("./users").fetchUsers;
-var fetchTeamsOrderedByGroup = require("./teams").fetchTeamsOrderedByGroup;
-var addTeam = require("./addTeam").addTeam;
-var addBet = require("./addBet").addBet;
+var users = require("./users");
+var teams = require("./teams");
+var bets = require("./bets");
+
+var sendResponse = (res, data) => {
+  res.status(200);
+  res.contentType("application/json");
+  res.send(JSON.stringify(data));
+} 
 
 router.use((req, res, next) => {
   if (req.user) next();
@@ -16,48 +21,37 @@ router.use((req, res, next) => {
 });
 
 router.get("/users", (req, res) => {
-  fetchUsers(rows => {
-    res.status(200);
-    res.contentType("application/json");
-    res.send(req.user.name + "\n" + JSON.stringify(rows));
+  users.fetchUsers(rows => {
+    sendResponse(res, rows);
   });
 });
 
 router.get("/teams", (req, res) => {
-  fetchTeamsOrderedByGroup(rows => {
-    res.status(200);
-    res.contentType("application/json");
-    res.send(req.user.name + "\n" + JSON.stringify(rows));
+  teams.fetchTeamsOrderedByGroup(rows => {
+    sendResponse(res, rows);
   });
 });
 
 router.post("/addTeam", (req, res) => {
-  addTeam([req.body.name, req.body.groupLetter], err => {
-    if (!err) {
-      res.status(200);
-      res.contentType("text/html");
-      res.send("<html><head></head><body><h3>Dodano drużynę</h3></body></html>");
-    }
-    else {
-      res.status(200);
-      res.contentType("text/html");
-      res.send("<html><head></head><body><h3>Wystąpił błąd</h3></body></html>");
-    }
+  teams.addTeam([req.body.name, req.body.groupLetter], err => {
+    var text = err ? "Wystąpił błąd" : "Dodano drużynę";
+    var html = `<html><head></head><body><h3>${text}</h3></body></html>`
+    sendResponse(res, html);
   });
 });
 
 router.post("/addBet", (req, res) => {
-  addBet([req.user.userID, req.body.fixture, req.body.result], err => {
-    if (!err) {
-      res.status(200);
-      res.contentType("text/html");
-      res.send("<html><head></head><body><h3>Dodano zakład</h3></body></html>");
-    } else {
-      res.status(200);
-      res.contentType("text/html");
-      res.send("<html><head></head><body><h3>Nie można dodać zakładu</h3></body></html>");
-    }
+  bets.addBet([req.user.userID, req.body.fixture, req.body.result], err => {
+    var text = err ? "Wystąpił błąd" : "Dodano zakład";
+    var html = `<html><head></head><body><h3>${text}</h3></body></html>`
+    sendResponse(res, html);
   });
 });
+
+router.get("/betHistory", (req, res) => {
+  bets.getBetHistory(req.user.userID, (err, response) => {
+    sendResponse(res, response);
+  });
+})
 
 module.exports = router;

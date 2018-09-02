@@ -16,3 +16,11 @@ exports.addBet = (params, apiCallback) => {
     });
   });
 };
+
+exports.getBetHistory = (userID, apiCallback) => {
+  executeQuery("selects/getBetsByUser.sql", userID).then(bets => {
+    return apiCallback(false, bets);
+  }).catch(err => {
+    return apiCallback(true, err);
+  })
+}
