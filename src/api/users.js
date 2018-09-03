@@ -27,7 +27,7 @@ const calculatePointsForUser = (id, login, UCLwinner, winner) => {
   return new Promise(resolve => {
     executeQuery("selects/getBetsByUser.sql", id).then(bets => {
       var totalNumberOfPoints = 0;
-      if (!bets) resolve(0);
+      if (!bets) resolve({id, login, pts: 0});
       if (!Array.isArray(bets)) bets = [bets];
       bets.forEach(element => {
         if (!element) return;
