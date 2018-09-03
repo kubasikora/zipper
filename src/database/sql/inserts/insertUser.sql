@@ -1,2 +1,2 @@
-INSERT INTO users (name, login, password, salt)
-VALUES ( ?, ?, ?, ? ); 
+INSERT INTO users (name, login, password, salt, UCLwinner)
+VALUES ( ?, ?, ?, ?, ? ); 

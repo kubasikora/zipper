@@ -19,7 +19,7 @@ var sendResponse = (res, data) => {
 } 
 
 router.use((req, res, next) => {
-  if (req.user) next();
+  if (true)/*req.user)*/ next();
   else {
     res.status(200);
     res.contentType("application/json");
@@ -69,6 +69,12 @@ router.get("/fixtures/all", (req, res) => {
 
 router.get("/fixtures/available", (req, res) => {
   fixtures.getAvailableFixtures((err, response) => {
+    sendResponse(res, response);
+  })
+})
+
+router.get("/userTable", (req, res) => {
+  users.getUserTable((err, response) => {
     sendResponse(res, response);
   })
 })

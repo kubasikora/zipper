@@ -7,10 +7,10 @@ var hashPassword = require("./hashPassword").hashPassword;
 exports.register = (req, res) => {
   executeQuery("selects/getUserByLogin.sql", req.body.login)
     .then(response => {
-      if (response.length !== 0) throw new Exception("user already exists");
+      if (response) throw new Exception("user already exists");
       var salt = genRandomString();
       var hash = hashPassword(req.body.password, salt);
-      var params = [req.body.name, req.body.login, hash, salt];
+      var params = [req.body.name, req.body.login, hash, salt, Date.now() < 1537289700000? req.body.UCLwinner : null];
       executeQuery("inserts/insertUser.sql", params).then(() => {
         res.status(200);
         res.contentType("text/html");
