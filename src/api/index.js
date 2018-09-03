@@ -4,6 +4,13 @@ var router = express.Router();
 var users = require("./users");
 var teams = require("./teams");
 var bets = require("./bets");
+var fixtures = require("./fixtures");
+
+/***********************
+ * 
+ * Obsługa błędów bazy!!!!!!
+ * 
+ */
 
 var sendResponse = (res, data) => {
   res.status(200);
@@ -21,13 +28,13 @@ router.use((req, res, next) => {
 });
 
 router.get("/users", (req, res) => {
-  users.fetchUsers(rows => {
+  users.fetchUsers((err,rows) => {
     sendResponse(res, rows);
   });
 });
 
 router.get("/teams", (req, res) => {
-  teams.fetchTeamsOrderedByGroup(rows => {
+  teams.fetchTeamsOrderedByGroup((err,rows) => {
     sendResponse(res, rows);
   });
 });
@@ -52,6 +59,18 @@ router.get("/betHistory", (req, res) => {
   bets.getBetHistory(req.user.userID, (err, response) => {
     sendResponse(res, response);
   });
+})
+
+router.get("/fixtures/all", (req, res) => {
+  fixtures.getAllFixtures((err, response) => {
+    sendResponse(res, response);
+  })
+})
+
+router.get("/fixtures/available", (req, res) => {
+  fixtures.getAvailableFixtures((err, response) => {
+    sendResponse(res, response);
+  })
 })
 
 module.exports = router;

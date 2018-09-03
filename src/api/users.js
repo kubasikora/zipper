@@ -1,8 +1,11 @@
 var executeQuery = require("../database/executeQuery").executeQuery;
 
 exports.fetchUsers = apiCallback => {
-    executeQuery("selects/getUsers.sql")
+  executeQuery("selects/getUsers.sql")
     .then(rows => {
-      apiCallback(rows);
-  });
+      apiCallback(false, rows);
+  })
+    .catch(err => {
+      apiCallback(true, err);
+    })
 };
