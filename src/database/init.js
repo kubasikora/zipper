@@ -5,12 +5,13 @@ var log = require("../server/log").log;
 exports.init = callback => {
     log("Started database initialization");
 
-    var users = executeQuery("init/createTableUsers.sql", null);
-    var fixtures = executeQuery("init/createTableFixtures.sql", null);
-    var teams = executeQuery("init/createTableTeams.sql", null);
-    var bets = executeQuery("init/createTableBets.sql", null);
+    var users = executeQuery("init/createTableUsers.sql");
+    var fixtures = executeQuery("init/createTableFixtures.sql");
+    var teams = executeQuery("init/createTableTeams.sql");
+    var bets = executeQuery("init/createTableBets.sql");
+    var globals = executeQuery("init/createTableGlobals.sql");
 
-    Promise.all([users, fixtures, teams, bets]).then(result => {
+    Promise.all([users, fixtures, teams, bets, globals]).then(result => {
       log("Database initialized successfully");
       callback();
     });

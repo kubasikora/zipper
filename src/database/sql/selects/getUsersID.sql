@@ -1,1 +1,1 @@
-SELECT users.userID, users.login from users
+SELECT users.userID, users.login, users.UCLwinner from users

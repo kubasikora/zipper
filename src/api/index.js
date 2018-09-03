@@ -19,7 +19,7 @@ var sendResponse = (res, data) => {
 } 
 
 router.use((req, res, next) => {
-  if (true)/*req.user)*/ next();
+  if (req.user) next();
   else {
     res.status(200);
     res.contentType("application/json");

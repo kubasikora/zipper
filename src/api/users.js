@@ -12,27 +12,35 @@ exports.fetchUsers = apiCallback => {
 
 exports.getUserTable = apiCallback => {
   executeQuery("selects/getUsersID.sql").then(rows => {
-    if(!rows) return apiCallback(false, []);
-    if(!Array.isArray(rows)) rows = [rows];
-    var promises = rows.map(element => calculatePointsForUser(element.userID, element.login))
-    Promise.all(promises).then(pts => apiCallback(false, pts));
+    executeQuery("selects/getUCLwinner.sql").then(winner => {
+      if (!rows) return apiCallback(false, []);
+      if (!Array.isArray(rows)) rows = [rows];
+      var promises = rows.map(element =>
+        calculatePointsForUser(element.userID, element.login, element.UCLwinner, winner)
+      );
+      Promise.all(promises).then(pts => apiCallback(false, pts));
+    });
   });
 };
 
-const calculatePointsForUser = (id, login) => {
+const calculatePointsForUser = (id, login, UCLwinner, winner) => {
   return new Promise(resolve => {
     executeQuery("selects/getBetsByUser.sql", id).then(bets => {
       var totalNumberOfPoints = 0;
-      if(!bets) resolve(0);
-      if(!Array.isArray(bets)) bets = [bets];
+      if (!bets) resolve(0);
+      if (!Array.isArray(bets)) bets = [bets];
       bets.forEach(element => {
-        if(!element) return;
+        if (!element) return;
         if (!element.final_score) return;
         var result = element.final_score.split(":");
         var bet = element.bet.split(":");
         totalNumberOfPoints += calculatePointsFromBet(bet, result);
       });
-      resolve({id, login, pts: totalNumberOfPoints});
+      if (!winner) resolve({id, login, pts: totalNumberOfPoints});
+      else {
+        if (UCLwinner == winner.value) totalNumberOfPoints += 10;
+        resolve({id, login, pts: totalNumberOfPoints});
+      }
     });
   });
 };
