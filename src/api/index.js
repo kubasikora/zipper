@@ -6,6 +6,8 @@ var teams = require("./teams");
 var bets = require("./bets");
 var fixtures = require("./fixtures");
 
+var admin = require("./admin");
+
 /***********************
  * 
  * Obsługa błędów bazy!!!!!!
@@ -17,6 +19,8 @@ var sendResponse = (res, data) => {
   res.contentType("application/json");
   res.send(JSON.stringify(data));
 } 
+
+router.use("/admin", admin);
 
 router.use((req, res, next) => {
   if (req.user) next();
@@ -36,14 +40,6 @@ router.get("/users", (req, res) => {
 router.get("/teams", (req, res) => {
   teams.fetchTeamsOrderedByGroup((err,rows) => {
     sendResponse(res, rows);
-  });
-});
-
-router.post("/addTeam", (req, res) => {
-  teams.addTeam([req.body.name, req.body.groupLetter], err => {
-    var text = err ? "Wystąpił błąd" : "Dodano drużynę";
-    var html = `<html><head></head><body><h3>${text}</h3></body></html>`
-    sendResponse(res, html);
   });
 });
 

@@ -37,6 +37,7 @@ init(() => {
 
   app.use("/", logRouter);
   app.use("/api", api);
+  
 
   app.listen(port, host);
   log(`Listening on port ${port} on host ${host}`);
