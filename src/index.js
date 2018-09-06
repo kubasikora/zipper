@@ -3,6 +3,7 @@ var session = require("express-session");
 var passport = require("passport");
 var bodyParser = require("body-parser");
 var sqlite3 = require("sqlite3");
+var cors = require("cors");
 
 var httpLogger = require("./server/httpLogger").logger;
 var api = require("./api");
@@ -19,6 +20,7 @@ var port = process.env.PORT || 8000;
 var host = debug.setHost();
 
 init(() => {
+  app.use(cors());
   app.use(httpLogger);
   app.use(express.static("../public"));
   app.use(bodyParser.json());

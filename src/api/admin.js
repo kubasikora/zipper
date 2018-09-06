@@ -17,16 +17,16 @@ var sendResponse = (res, data) => {
   res.contentType("application/json");
   res.send(JSON.stringify(data));
 };
-/*
+
 router.use((req, res, next) => {
-  if (req.user.userID == 1 && req.user.login === "admin") next();
+  if (process.argv[2] === "-d" || (req.user.userID == 1 && req.user.login === "admin")) next();
   else {
     res.status(200);
     res.contentType("application/json");
     res.send("Wstęp tylko dla admina!");
   }
 });
-*/
+
 router.post("/team", (req, res) => {
   teams.addTeam([req.body.name, req.body.groupLetter], err => {
     var text = err ? "Wystąpił błąd" : "Dodano drużynę";

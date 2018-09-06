@@ -5,9 +5,9 @@ var logout = require("./logout").logout;
 var register = require("./register").register;
 var changePassword = require("./changePassword").changePassword;
 
-router.post("/login", passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/login.html"
+router.post("/login",passport.authenticate("local", {
+    successRedirect: "http://localhost:3000/home",
+    failureRedirect: "htpp://localhost:3000/badLogin"
   })
 );
 

@@ -23,13 +23,19 @@ var sendResponse = (res, data) => {
 router.use("/admin", admin);
 
 router.use((req, res, next) => {
-  if (req.user) next();
+  if (req.user || process.argv[2] === "-d") next();
   else {
     res.status(200);
     res.contentType("application/json");
     res.send("Proszę się zalogować!");
   }
 });
+
+router.get("/isLogged", (req, res) => {
+  sendResponse(res, {
+    "isAuthenticated": `${!!req.user}`
+  });
+})
 
 router.get("/users", (req, res) => {
   users.fetchUsers((err,rows) => {

@@ -2,7 +2,7 @@ var fs = require("fs");
 var sqlite3 = require("sqlite3");
 
 var log = require("../server/log").log;
-var dir = "./database/sql/";
+var dir = "./src/database/sql/";
 
 var prepareResult = rows => {
   if (rows.length === 1) return rows[0];
@@ -21,7 +21,7 @@ var returnResult = (err, rows, db, resolve) => {
 exports.executeQuery = (filename, params) => {
   return new Promise((resolve, reject) => {
     try {
-      var db = new sqlite3.Database("../zipdb.db");
+      var db = new sqlite3.Database("./zipdb.db");
       fs.readFile(dir + filename, (err, sql) => {
         if (err) throw err;
         log("Running SQL query " + filename);
