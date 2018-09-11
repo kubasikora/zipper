@@ -13,6 +13,7 @@ exports.init = callback => {
   var bets = executeQuery("init/createTableBets.sql");
   var globals = executeQuery("init/createTableGlobals.sql");
 
+  try{
   Promise.all([users, fixtures, teams, bets, globals]).then(result => {
     executeQuery("selects/getUserByLogin.sql", "admin").then(users => {
       if (!users) {
@@ -27,4 +28,8 @@ exports.init = callback => {
       callback();
     });
   });
+  }
+  catch(err){
+    callback();
+  } 
 };
