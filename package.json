@@ -2,7 +2,7 @@
   "name": "zipapp",
   "version": "1.0.0",
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index.js",
     "client": "cd client && yarn start",
     "server": "nodemon src/index.js",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
