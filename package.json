@@ -4,7 +4,7 @@
   "scripts": {
     "client": "cd client && npm install && npm run start",
     "server": "nodemon src/index.js",
-    "start": "PORT=80 concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
+    "start": "PORT=80 node src/index.js"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
