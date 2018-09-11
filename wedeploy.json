@@ -1,6 +1,6 @@
 {
     "id": "zipappbe",
     "env": {
-        "port": 80
+        "port": "80"
     }
 }
