@@ -17,7 +17,7 @@ var logRouter = require("./auth/logRouter");
 var teams = require("./api/teams");
 
 var app = express();
-var port = process.env.PORT || 8000;
+var port = process.env.PORT || 80;
 var host = debug.setHost();
 
 init(() => {
