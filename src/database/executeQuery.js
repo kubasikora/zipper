@@ -30,6 +30,7 @@ exports.executeQuery = (filename, params) => {
         else db.all(sql.toString(), (err, rows) => returnResult(err, rows, db, resolve));
       });
     } catch (err) {
+      db.close();
       reject(err);
     }
   });

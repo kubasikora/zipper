@@ -2,9 +2,8 @@
   "name": "zipapp",
   "version": "1.0.0",
   "scripts": {
-    "client": "cd client && npm install && npm run start",
-    "server": "nodemon src/index.js",
-    "start": "PORT=80 node src/index.js"
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
