@@ -6,9 +6,8 @@ var register = require("./register").register;
 var changePassword = require("./changePassword").changePassword;
 
 router.post("/login",passport.authenticate("local", {
-    successRedirect: "http://localhost:3000/home",
-    failureRedirect: "htpp://localhost:3000/badLogin"
-  })
+  }), function(req, res) {
+    res.redirect('/')}
 );
 
 router.post("/register", (req, res) => {
@@ -24,3 +23,4 @@ router.get("/logout", (req, res) => {
 });
 
 module.exports = router;
+//kocham Cię <3

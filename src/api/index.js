@@ -31,12 +31,6 @@ router.use((req, res, next) => {
   }
 });
 
-router.get("/isLogged", (req, res) => {
-  sendResponse(res, {
-    "isAuthenticated": `${!!req.user}`
-  });
-})
-
 router.get("/users", (req, res) => {
   users.fetchUsers((err,rows) => {
     sendResponse(res, rows);
