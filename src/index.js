@@ -23,7 +23,7 @@ var host = debug.setHost();
 init(() => {
   app.use(cors());
   app.use(httpLogger);
-  app.use(express.static("../public"));
+  app.use(express.static("./public"));
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({extended: true}));
   app.use(session({secret: "tjmmnw", resave: null, saveUninitialized: null}));
@@ -68,4 +68,5 @@ init(() => {
   });
 
   app.listen(port);
+  log(`Listening on port ${port}`)
 });

@@ -2,7 +2,8 @@
   "name": "zipapp",
   "version": "1.0.0",
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
