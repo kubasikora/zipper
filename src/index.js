@@ -19,7 +19,7 @@ var teams = require("./api/teams");
 var app = express();
 var port = process.env.PORT || 8000;
 var host = debug.setHost();
-s
+
 init(() => {
   app.use(cors());
   app.use(httpLogger);
