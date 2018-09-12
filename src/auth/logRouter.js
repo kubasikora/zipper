@@ -17,7 +17,6 @@ router.post("/login",passport.authenticate("local", {
 
 function serialize(req, res, next) {  
   db.updateOrCreate(req.user, function(err, user){
-    console.log(`user serialized ${JSON.stringify(req.user)}`)
     if(err) {return next(err);}
     next();
   });
@@ -49,7 +48,8 @@ function generateToken(req, res, next) {
 }
 
 function respond(req, res) { 
-  res.cookie("authToken", req.token, {"maxAge": 86400000}) 
+  res.cookie("authToken", req.token, {"maxAge": 86400000});
+  res.cookie("username", req.user.name, {"maxAge": 86400000});
   res.status(200).json({
     user: req.user,
     token: req.token
