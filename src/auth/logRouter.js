@@ -5,16 +5,67 @@ var logout = require("./logout").logout;
 var register = require("./register").register;
 var changePassword = require("./changePassword").changePassword;
 
+/*
 router.post("/login",passport.authenticate("local", {
+  successRedirect: "https://zipappfe-zipper.wedeploy.io/home",
+  failureRedirect: "https://zipappfe-zipper.wedeploy.io"
   }), function(req, res) {
-    res.redirect('/')}
+   // res.redirect('https://zipappfe-zipper.wedeploy.io/home')
+  }
 );
+*/
+
+function serialize(req, res, next) {  
+  db.updateOrCreate(req.user, function(err, user){
+    console.log(`user serialized ${JSON.stringify(req.user)}`)
+    if(err) {return next(err);}
+    next();
+  });
+}
+const db = {  
+  updateOrCreate: function(user, cb){
+    cb(null, user);
+  }
+};
+
+const serializeUser = (req, done) => {
+  return done(null, user.userID);
+};
+
+passport.deserializeUser((id, done) => deserializeUser(id, done));
+
+const expressJwt = require('express-jwt');  
+const authenticate = expressJwt({secret : 'server secret'});
+router.get('/me', authenticate, function(req, res) {  
+  res.status(200).json(req.user);
+});
+
+const jwt = require('jsonwebtoken');
+function generateToken(req, res, next) {  
+  req.token = jwt.sign({
+    id: req.user.id,
+  }, 'server secret');
+  next();
+}
+
+function respond(req, res) { 
+  res.cookie("authToken", req.token, {"maxAge": 86400000}) 
+  res.status(200).json({
+    user: req.user,
+    token: req.token
+  });
+}
+
+router.post('/login', passport.authenticate(  
+  'local', {
+    session: false
+  }), serialize, generateToken, respond);
 
 router.post("/register", (req, res) => {
   return register(req, res);
 });
 
-router.post("/changePassword", (req, res) => {
+router.post("/changePassword", authenticate, (req, res) => {
   return changePassword(req, res);
 });
 

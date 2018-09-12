@@ -5,7 +5,7 @@ var users = require("./users");
 var teams = require("./teams");
 var bets = require("./bets");
 var fixtures = require("./fixtures");
-
+const expressJwt = require('express-jwt');  
 var admin = require("./admin");
 
 /***********************
@@ -22,6 +22,8 @@ var sendResponse = (res, data) => {
 
 router.use("/admin", admin);
 
+const authenticate = expressJwt({secret : 'server secret'});
+/*
 router.use((req, res, next) => {
   if (req.user || process.argv[2] === "-d") next();
   else {
@@ -30,7 +32,8 @@ router.use((req, res, next) => {
     res.send("Proszę się zalogować!");
   }
 });
-
+*/
+router.use(authenticate);
 router.get("/users", (req, res) => {
   users.fetchUsers((err,rows) => {
     sendResponse(res, rows);
