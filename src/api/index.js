@@ -6,7 +6,7 @@ var teams = require("./teams");
 var bets = require("./bets");
 var fixtures = require("./fixtures");
 const expressJwt = require('express-jwt');  
-var admin = require("./admin");
+
 
 /***********************
  * 
@@ -20,7 +20,7 @@ var sendResponse = (res, data) => {
   res.send(JSON.stringify(data));
 } 
 
-router.use("/admin", admin);
+
 
 const authenticate = expressJwt({secret : 'server secret'});
 /*
@@ -47,7 +47,7 @@ router.get("/teams", (req, res) => {
 });
 
 router.post("/addBet", (req, res) => {
-  bets.addBet([req.user.userID, req.body.fixture, req.body.result], err => {
+  bets.addBet([req.body.userID, req.body.fixture, req.body.result], err => {
     var text = err ? "Wystąpił błąd" : "Dodano zakład";
     var html = `<html><head></head><body><h3>${text}</h3></body></html>`
     sendResponse(res, html);
@@ -55,7 +55,7 @@ router.post("/addBet", (req, res) => {
 });
 
 router.get("/betHistory", (req, res) => {
-  bets.getBetHistory(req.user.userID, (err, response) => {
+  bets.getBetHistory(req.query.userID, (err, response) => {
     sendResponse(res, response);
   });
 })

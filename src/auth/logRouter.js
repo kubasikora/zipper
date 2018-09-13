@@ -4,6 +4,7 @@ var passport = require("passport");
 var logout = require("./logout").logout;
 var register = require("./register").register;
 var changePassword = require("./changePassword").changePassword;
+var deserializeUser = require("./deserialize").deserializeUser;
 
 /*
 router.post("/login",passport.authenticate("local", {
@@ -49,7 +50,8 @@ function generateToken(req, res, next) {
 
 function respond(req, res) { 
   res.cookie("authToken", req.token, {"maxAge": 86400000});
-  //res.cookie("username", req.user.name, {"maxAge": 86400000});
+  res.cookie("username", req.user.name, {"maxAge": 86400000});
+  res.cookie("userID", req.user.userID, {"maxAge": 86400000});
   res.status(200).json({
     user: req.user,
     token: req.token
@@ -58,7 +60,7 @@ function respond(req, res) {
 
 router.post('/login', passport.authenticate(  
   'local', {
-    session: false
+    session: true
   }), serialize, generateToken, respond);
 
 router.post("/register", (req, res) => {

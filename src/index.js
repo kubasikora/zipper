@@ -12,21 +12,23 @@ var log = require("./server/log").log;
 var debug = require("./server/setHost");
 var hashPassword = require("./auth/hashPassword").hashPassword;
 var authStrategy = require("./auth/authStrategy").authStrategy;
-var deserializeUser = require("./auth/deserialize").deserializeUser;
 var logRouter = require("./auth/logRouter");
 var teams = require("./api/teams");
-
+var admin = require("./api/admin");
 var app = express();
 var port = process.env.PORT || 80;
 var host = debug.setHost();
 
 init(() => {
+
   app.use(cors());
   app.use(httpLogger);
   app.use(express.static("./public"));
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({extended: true}));
   app.use(session({secret: "tjmmnw", resave: null, saveUninitialized: null}));
+ 
+  
   app.use(passport.initialize());
   app.use(passport.session());
 
@@ -40,6 +42,7 @@ init(() => {
 
   app.use("/", logRouter);
   app.use("/api", api);
+  app.use("/admin", admin);
 
   app.get("/isLogged", (req, res) => {
     res.status(200);
