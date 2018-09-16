@@ -46,7 +46,7 @@ router.delete("/fixture", (req, res) => {
   });
 });
 
-router.put("/fixture/result", (req, res) => {
+router.post("/fixture/result", (req, res) => {
   fixtures.setResult([req.body.result, req.body.fixtureID], err => {
     var text = err ? "Wystąpił błąd" : "Dodano rezultat";
     var html = `<html><head></head><body><h3>${text}</h3></body></html>`;

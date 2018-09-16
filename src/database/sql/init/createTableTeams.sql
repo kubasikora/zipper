@@ -1,13 +1,14 @@
-CREATE TABLE IF NOT EXISTS "teams" (
-    `teamID` INTEGER NOT NULL,
-    `name` VARCHAR UNIQUE,
-    `groupLetter` CHAR ( 1 ) NOT NULL,
-    `matchesPlayed` INTEGER,
-    `wins` INTEGER,
-    `draws` INTEGER,
-    `losses` INTEGER,
-    `goalsScored` INTEGER,
-    `goalsConceded` INTEGER,
-    `isPlaying` TEXT,
-    PRIMARY KEY(`teamID`)
-)
+CREATE TABLE IF NOT EXISTS teams (
+  `teamID` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255),
+  `groupLetter` VARCHAR(1) NOT NULL,
+  `matchesPlayed` INT,
+  `wins` INT,
+  `draws` INT,
+  `losses` INT,
+  `goalsScored` INT,
+  `goalsConceded` INT,
+  `isPlaying` TEXT,
+  PRIMARY KEY(`teamID`),
+  UNIQUE(`name`)
+);

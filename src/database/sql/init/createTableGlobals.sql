@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `globals` (
+CREATE TABLE IF NOT EXISTS globals (
 	`name`	TEXT,
 	`value`	TEXT
-)
+);
