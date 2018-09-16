@@ -5,6 +5,7 @@ var executeQuery = require("../database/executeQuery").executeQuery;
 var hashPassword = require("./hashPassword").hashPassword;
 
 exports.register = (req, res) => {
+  console.log(req.body);
   executeQuery("selects/getUserByLogin.sql", req.body.login)
     .then(response => {
       if (response) throw new Exception("user already exists");
